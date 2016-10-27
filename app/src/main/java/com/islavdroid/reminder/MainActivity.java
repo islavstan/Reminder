@@ -1,10 +1,24 @@
 package com.islavdroid.reminder;
 
+
+
 import android.app.FragmentManager;
+import android.support.design.widget.TabLayout;
+
+
+
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+
+import com.islavdroid.reminder.adapters.TabAdapter;
+import com.islavdroid.reminder.fragments.SplashFragment;
+
 
 public class MainActivity extends AppCompatActivity {
  private FragmentManager fragmentManager;
@@ -14,13 +28,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //-----------сохранение настроек меню--------------
         PreferenceHelper.getInstance().init(getApplicationContext());
         preferenceHelper = PreferenceHelper.getInstance();
         //-----------сохранение настроек меню--------------
 
-
+        setUi();
         fragmentManager = getFragmentManager();
         runSplash();
 
@@ -48,11 +61,43 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void runSplash(){
+        //проверяем нажата галочка или нет
         if(!preferenceHelper.getBoolean(PreferenceHelper.SPLASH_IS_INVISIBLE)) {
             SplashFragment splashFragment = new SplashFragment();
             fragmentManager.beginTransaction().replace(R.id.activity_main, splashFragment).addToBackStack(null).commit();
         }
 
+    }
+
+    private void setUi(){
+        setTitle("");
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        if(toolbar!=null){
+            setSupportActionBar(toolbar);
+        }
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.current_task));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.done_task));
+        final ViewPager viewPager =(ViewPager)findViewById(R.id.viewpager);
+        TabAdapter tabAdapter =new TabAdapter(getSupportFragmentManager(),2);
+        viewPager.setAdapter(tabAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+          viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 }

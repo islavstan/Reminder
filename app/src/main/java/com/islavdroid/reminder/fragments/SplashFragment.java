@@ -1,16 +1,20 @@
-package com.islavdroid.reminder;
+package com.islavdroid.reminder.fragments;
 
+
+import android.app.Fragment;
 import android.content.Context;
 
 import java.util.concurrent.TimeUnit;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.islavdroid.reminder.R;
 
 
 public class SplashFragment extends Fragment {
@@ -35,7 +39,9 @@ public class SplashFragment extends Fragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            getActivity().getFragmentManager().popBackStack();
+            if(getActivity()!=null){
+                //закрываем фрагмент
+            getActivity().getFragmentManager().popBackStack();}
             return null;
         }
     }
