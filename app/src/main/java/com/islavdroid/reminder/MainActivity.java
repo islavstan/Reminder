@@ -2,25 +2,35 @@ package com.islavdroid.reminder;
 
 
 
+import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 
 
 
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
+
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 
 import com.islavdroid.reminder.adapters.TabAdapter;
+import com.islavdroid.reminder.dialogs.AddingTaskDialogFragment;
 import com.islavdroid.reminder.fragments.SplashFragment;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener{
  private FragmentManager fragmentManager;
     PreferenceHelper preferenceHelper;
     @Override
@@ -34,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         //-----------сохранение настроек меню--------------
 
         setUi();
+        setData();
         fragmentManager = getFragmentManager();
         runSplash();
 
@@ -98,6 +109,38 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        FloatingActionButton fab =(FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment addTask =new AddingTaskDialogFragment();
+                addTask.show(fragmentManager,"AddingTaskDialogFragment");
+            }
+        });
     }
 
+    private void setData(){
+        TextView date_number =(TextView)findViewById(R.id.date_number);
+        TextView day_week =(TextView)findViewById(R.id.day_week);
+        TextView name_month =(TextView)findViewById(R.id.name_month);
+        Locale locale = new Locale("ru", "RU");
+        Calendar calendar = new GregorianCalendar();
+        String month_name =calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale);
+        String day_name =calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG,locale);
+        String date =calendar.get(Calendar.DATE)+"";
+        date_number.setText(date);
+        day_week.setText(day_name);
+        name_month.setText(month_name);
+    }
+
+    @Override
+    public void onTaskAdded() {
+        Toast.makeText(this,"Задание добавлено",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTaskAddingCancel() {
+        Toast.makeText(this,"Задание отменено",Toast.LENGTH_SHORT).show();
+    }
 }

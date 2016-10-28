@@ -7,4 +7,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dialog_title">Добавить цель</string>
+    <string name="title_hint">Название</string>
+    <string name="date_hint">Дата</string>
+    <string name="time_hint">Время</string>
+    <string name="ok">ок</string>
+    <string name="cancel">отмена</string>
+    <string name="error">поле не может быть пустым</string>
 </resources>

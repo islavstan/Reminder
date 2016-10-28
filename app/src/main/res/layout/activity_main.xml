@@ -1,6 +1,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:fab="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -33,32 +34,32 @@
                 android:layout_marginTop="60dp"
                 android:layout_marginLeft="30dp"
                 android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:id="@+id/date_number"
+                    android:id="@+id/date_number"
 
-                android:textSize="34sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorWhite"
-                android:text="25"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/date_number"
-                android:id="@+id/day_week"
-                 android:layout_alignBaseline="@+id/date_number"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:textColor="@color/colorWhite"
-                android:text="воскресенье"/>
+                    android:textSize="34sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:text="25"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/date_number"
+                    android:id="@+id/day_week"
+                    android:layout_alignBaseline="@+id/date_number"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    android:textColor="@color/colorWhite"
+                    android:text="воскресенье"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-10dp"
-                   android:layout_below="@+id/date_number"
+                    android:layout_below="@+id/date_number"
                     android:id="@+id/name_month"
 
 
@@ -95,6 +96,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+ <android.support.design.widget.FloatingActionButton
+     android:layout_width="wrap_content"
+     android:id="@+id/fab"
+     android:layout_height="wrap_content"
+     android:layout_margin="@dimen/fab_margin"
+     app:backgroundTint="#76FF03"
+     app:rippleColor="#B2FF59"
+     android:layout_gravity="bottom|right|end"
+     android:src="@drawable/ic_add_white_24px"
+     />
 
 </android.support.design.widget.CoordinatorLayout>
 
