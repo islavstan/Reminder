@@ -15,11 +15,18 @@ public class TabAdapter  extends FragmentStatePagerAdapter {
    private int numOfTabs;
 
 
+public static final int CURRENT_TASK_FRAGMENT_POSITION =0;
+public static final int DONE_TASK_FRAGMENT_POSITION =1;
+    //чтобы объекты не создавались каждый раз при вызове getItem нужно инициализировать объекты
+    private CurrentTaskFragment currentTaskFragment;
+    private DoneTaskFragment doneTaskFragment;
 
 
     public TabAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         this.numOfTabs = numOfTabs;
+        currentTaskFragment = new CurrentTaskFragment();
+        doneTaskFragment = new DoneTaskFragment();
 
 
     }
@@ -28,10 +35,10 @@ public class TabAdapter  extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new CurrentTaskFragment();
+                return  currentTaskFragment;
 
             case 1:
-                return new DoneTaskFragment();
+                return  doneTaskFragment;
 
             default:
                 return null;

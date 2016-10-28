@@ -2,9 +2,7 @@ package com.islavdroid.reminder;
 
 import java.text.SimpleDateFormat;
 
-/**
- * Created by islav on 28.10.2016.
- */
+
 
 public class Utils {
     public static String getDate(long date){
@@ -14,5 +12,10 @@ public class Utils {
     public static String getTime(long time){
         SimpleDateFormat timeFormat =new SimpleDateFormat("HH.mm");
         return timeFormat.format(time);
+    }
+
+    public static String getFullDate(long date){
+        SimpleDateFormat fullDateFormat = new SimpleDateFormat("dd.MM.yy  HH.mm");
+        return fullDateFormat.format(date);
     }
 }

@@ -23,12 +23,14 @@ import com.islavdroid.reminder.Utils;
 
 import java.util.Calendar;
 
+import model.ModelTask;
+
 public class AddingTaskDialogFragment extends DialogFragment{
 
     private AddingTaskListener addingTaskListener;
 
     public interface AddingTaskListener{
-        void onTaskAdded();
+        void onTaskAdded(ModelTask newTask);
         void onTaskAddingCancel();
 
     }
@@ -45,6 +47,12 @@ public class AddingTaskDialogFragment extends DialogFragment{
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow()
+                .getAttributes().windowAnimations = R.style.DialogAnimation2;
+    }
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_title);
@@ -60,6 +68,12 @@ public class AddingTaskDialogFragment extends DialogFragment{
         final EditText etTime = time.getEditText();
         time.setHint(getResources().getString(R.string.time_hint));
         builder.setView(view);
+        final ModelTask modelTask =new ModelTask();
+        final Calendar calendar=Calendar.getInstance();
+        //срабатывает через час если указана только дата при создании задачи
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)+1);
+
+
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,8 +83,9 @@ public class AddingTaskDialogFragment extends DialogFragment{
                 DialogFragment datePickerFragment =new DatePickerFragment(){
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(year,month,dayOfMonth);
+                     calendar.set(Calendar.YEAR,year);
+                        calendar.set(Calendar.MONTH,month);
+                        calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
                         etDate.setText(Utils.getDate(calendar.getTimeInMillis()));
 
                     }
@@ -93,9 +108,10 @@ public class AddingTaskDialogFragment extends DialogFragment{
                 DialogFragment timePickerFragment =new TimePickerFragment(){
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Calendar timeCal = Calendar.getInstance();
-                        timeCal.set(0,0,0,hourOfDay,minute);
-                        etTime.setText(Utils.getTime(timeCal.getTimeInMillis()));
+                       calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        calendar.set(Calendar.MINUTE,minute);
+                        calendar.set(Calendar.SECOND,0);
+                        etTime.setText(Utils.getTime(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -109,7 +125,11 @@ public class AddingTaskDialogFragment extends DialogFragment{
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addingTaskListener.onTaskAdded();
+                modelTask.setTitle(etTitle.getText().toString());
+                if(etDate.length()!=0||etTime.length()!=0){
+                    modelTask.setDate(calendar.getTimeInMillis());
+                }
+                addingTaskListener.onTaskAdded(modelTask);
              dialog.dismiss();
 
             }
