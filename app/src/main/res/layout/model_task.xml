@@ -10,7 +10,7 @@
         android:textSize="16sp"
 
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="72dp"
         android:textColor="#000000"
         android:layout_alignParentLeft="true"
         android:layout_toRightOf="@+id/tvTaskDate"
@@ -25,5 +25,13 @@
            android:layout_alignParentRight="true"
         android:id="@+id/tvTaskDate"
         android:gravity="right"/>
+    
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/cvTaskProirity"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@color/colorPrimary"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
 
 </RelativeLayout>

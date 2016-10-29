@@ -1,6 +1,9 @@
 package com.islavdroid.reminder.fragments;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.islavdroid.reminder.R;
 import com.islavdroid.reminder.adapters.CurrentTasksAdapter;
+import com.islavdroid.reminder.adapters.TaskAdapter;
+import com.islavdroid.reminder.dialogs.AddingTaskDialogFragment;
 
 import model.ModelTask;
 
@@ -18,46 +23,62 @@ import model.ModelTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CurrentTaskFragment extends Fragment {
+public class CurrentTaskFragment extends TaskFragment {
 
-private RecyclerView rvCurrentTasks;
-    private RecyclerView.LayoutManager layoutManager;
-    private CurrentTasksAdapter adapter;
+
     public CurrentTaskFragment() {
         // Required empty public constructor
     }
+    OnTaskDoneListener onTaskDoneListener;
+
+    public interface OnTaskDoneListener{
+        void onTaskDone(ModelTask task);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            onTaskDoneListener=(OnTaskDoneListener) context;
+
+        }catch (ClassCastException ex){
+            throw new ClassCastException(context.toString()+"must implements AddingTaskListener");
+        }
+    }
 
 
+
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            try {
+                onTaskDoneListener=(OnTaskDoneListener) activity;
+
+            }catch (ClassCastException ex){
+                throw new ClassCastException(activity.toString()+"must implements AddingTaskListener");
+            }
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
      View rootView = inflater.inflate(R.layout.fragment_current_task, container, false);
-        rvCurrentTasks = (RecyclerView) rootView.findViewById(R.id.rvCurrentTasks);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.rvCurrentTasks);
         layoutManager=new LinearLayoutManager(getActivity());
-        rvCurrentTasks.setLayoutManager(layoutManager);
-        adapter = new CurrentTasksAdapter();
-        rvCurrentTasks.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new CurrentTasksAdapter(this);
+        recyclerView.setAdapter(adapter);
         return rootView;
     }
-    public void addTask(ModelTask newTask){
-        int position =-1;
-        //чтобы элементы сортировались по дате
-        for(int i=0;i<adapter.getItemCount();i++){
-            if(adapter.getItem(i).isTask()){
-                ModelTask task = (ModelTask)adapter.getItem(i);
-                if(newTask.getDate()<task.getDate()){
-                    position=i;
-                    break;
-                }
-            }
-        }
 
-        if(position!=-1){
-            adapter.addItem(position,newTask);
 
-        }else{
-            adapter.addItem(newTask);
-        }
+    @Override
+    public void moveTask(ModelTask task) {
+   onTaskDoneListener.onTaskDone(task);
     }
-
 }

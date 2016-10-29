@@ -26,6 +26,7 @@ import com.islavdroid.reminder.dialogs.AddingTaskDialogFragment;
 import com.islavdroid.reminder.fragments.CurrentTaskFragment;
 import com.islavdroid.reminder.fragments.DoneTaskFragment;
 import com.islavdroid.reminder.fragments.SplashFragment;
+import com.islavdroid.reminder.fragments.TaskFragment;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -34,10 +35,12 @@ import java.util.Locale;
 import model.ModelTask;
 
 
-public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener{
+public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener,DoneTaskFragment.OnTaskRestoreListener,
+        CurrentTaskFragment.OnTaskDoneListener{
+
 private TabAdapter tabAdapter;
-    private CurrentTaskFragment currentTaskFragment;
-    private DoneTaskFragment doneTaskFragment;
+    private TaskFragment currentTaskFragment;
+    private TaskFragment doneTaskFragment;
  private FragmentManager fragmentManager;
     PreferenceHelper preferenceHelper;
     @Override
@@ -153,5 +156,16 @@ private TabAdapter tabAdapter;
     @Override
     public void onTaskAddingCancel() {
         Toast.makeText(this,"Задание отменено",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTaskDone(ModelTask task) {
+        doneTaskFragment.addTask(task);
+    }
+
+    @Override
+    public void onTaskRestore(ModelTask task) {
+        currentTaskFragment.addTask(task);
+
     }
 }

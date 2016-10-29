@@ -1,21 +1,26 @@
 package com.islavdroid.reminder.dialogs;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.islavdroid.reminder.R;
@@ -38,11 +43,30 @@ public class AddingTaskDialogFragment extends DialogFragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         try {
             addingTaskListener=(AddingTaskListener) context;
 
         }catch (ClassCastException ex){
             throw new ClassCastException(context.toString()+"must implements AddingTaskListener");
+        }
+    }
+
+
+
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            try {
+                addingTaskListener=(AddingTaskListener) activity;
+
+            }catch (ClassCastException ex){
+                throw new ClassCastException(activity.toString()+"must implements AddingTaskListener");
+            }
         }
     }
 
@@ -66,9 +90,44 @@ public class AddingTaskDialogFragment extends DialogFragment{
         date.setHint(getResources().getString(R.string.date_hint));
         final TextInputLayout time = (TextInputLayout)view.findViewById(R.id.dialogTaskTime);
         final EditText etTime = time.getEditText();
+
         time.setHint(getResources().getString(R.string.time_hint));
+
+        Spinner prioritySpinner = (Spinner)view.findViewById(R.id.spDialogTaskPriority) ;
+
+
         builder.setView(view);
         final ModelTask modelTask =new ModelTask();
+
+        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,ModelTask.PRIORITY_LEVELS);
+      prioritySpinner.setAdapter(priorityAdapter);
+
+        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               //установим приоритет используя position
+                modelTask.setPriority(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         final Calendar calendar=Calendar.getInstance();
         //срабатывает через час если указана только дата при создании задачи
         calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY)+1);
@@ -129,6 +188,7 @@ public class AddingTaskDialogFragment extends DialogFragment{
                 if(etDate.length()!=0||etTime.length()!=0){
                     modelTask.setDate(calendar.getTimeInMillis());
                 }
+                modelTask.setStatus(ModelTask.STATUS_CURRENT);
                 addingTaskListener.onTaskAdded(modelTask);
              dialog.dismiss();
 
