@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 
 import com.islavdroid.reminder.adapters.TabAdapter;
+import com.islavdroid.reminder.database.DBHelper;
 import com.islavdroid.reminder.dialogs.AddingTaskDialogFragment;
 import com.islavdroid.reminder.fragments.CurrentTaskFragment;
 import com.islavdroid.reminder.fragments.DoneTaskFragment;
@@ -43,6 +44,7 @@ private TabAdapter tabAdapter;
     private TaskFragment doneTaskFragment;
  private FragmentManager fragmentManager;
     PreferenceHelper preferenceHelper;
+    public DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,8 @@ private TabAdapter tabAdapter;
         PreferenceHelper.getInstance().init(getApplicationContext());
         preferenceHelper = PreferenceHelper.getInstance();
         //-----------сохранение настроек меню--------------
+
+        dbHelper = new DBHelper(getApplicationContext());
 
         setUi();
         setData();
@@ -150,7 +154,7 @@ private TabAdapter tabAdapter;
 
     @Override
     public void onTaskAdded(ModelTask newTask) {
-       currentTaskFragment.addTask(newTask);
+       currentTaskFragment.addTask(newTask,true);
     }
 
     @Override
@@ -160,12 +164,12 @@ private TabAdapter tabAdapter;
 
     @Override
     public void onTaskDone(ModelTask task) {
-        doneTaskFragment.addTask(task);
+        doneTaskFragment.addTask(task,false);
     }
 
     @Override
     public void onTaskRestore(ModelTask task) {
-        currentTaskFragment.addTask(task);
+        currentTaskFragment.addTask(task,false);
 
     }
 }

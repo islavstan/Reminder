@@ -14,6 +14,10 @@ import android.view.ViewGroup;
 
 import com.islavdroid.reminder.R;
 import com.islavdroid.reminder.adapters.DoneTaskAdapter;
+import com.islavdroid.reminder.database.DBHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import model.ModelTask;
 
@@ -78,5 +82,16 @@ OnTaskRestoreListener onTaskRestoreListener;
     @Override
     public void moveTask(ModelTask task) {
   onTaskRestoreListener.onTaskRestore(task);
+    }
+
+    @Override
+    public void addTaskFromDB() {
+        List<ModelTask> tasks = new ArrayList<>();
+        tasks.addAll(activity.dbHelper.query().getTasks(DBHelper.SELECTION_STATUS,
+                new String[]{Integer.toString(ModelTask.STATUS_DONE)},
+                DBHelper.DATE_COLUMN));
+        for(int i =0;i<tasks.size();i++){
+            addTask(tasks.get(i),false);
+        }
     }
 }

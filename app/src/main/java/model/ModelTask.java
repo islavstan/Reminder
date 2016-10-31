@@ -3,6 +3,8 @@ package model;
 
 import com.islavdroid.reminder.R;
 
+import java.util.Date;
+
 public class ModelTask implements Item{
 
 
@@ -16,7 +18,7 @@ public class ModelTask implements Item{
     public static final int STATUS_CURRENT =1;
     public static final int STATUS_DONE =2;
     private String title;
-    private long date;
+    private long date,timeStamp;
     private int priority,status;
     @Override
     public boolean isTask() {
@@ -24,12 +26,14 @@ public class ModelTask implements Item{
     }
     public ModelTask(){
         this.status=-1;
+        this.timeStamp =new Date().getTime();
     }
-    public ModelTask(String title,long date,int priority,int status){
+    public ModelTask(String title,long date,int priority,int status,long timeStamp){
         this.priority=priority;
         this.status =status;
         this.title=title;
         this.date=date;
+        this.timeStamp =timeStamp;
     }
 
     public int getPriorityColor(){
@@ -82,5 +86,13 @@ public class ModelTask implements Item{
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }
