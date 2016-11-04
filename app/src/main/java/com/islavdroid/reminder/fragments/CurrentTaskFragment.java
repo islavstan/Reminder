@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 
 import com.islavdroid.reminder.R;
 import com.islavdroid.reminder.adapters.CurrentTasksAdapter;
-import com.islavdroid.reminder.adapters.TaskAdapter;
 import com.islavdroid.reminder.database.DBHelper;
-import com.islavdroid.reminder.dialogs.AddingTaskDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 
 
 /**

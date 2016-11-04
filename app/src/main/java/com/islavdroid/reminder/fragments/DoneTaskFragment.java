@@ -19,7 +19,7 @@ import com.islavdroid.reminder.database.DBHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 
 
 /**

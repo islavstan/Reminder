@@ -28,7 +28,7 @@ import com.islavdroid.reminder.Utils;
 
 import java.util.Calendar;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 
 public class AddingTaskDialogFragment extends DialogFragment{
 

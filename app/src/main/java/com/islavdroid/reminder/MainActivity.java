@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 
 
 public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener,DoneTaskFragment.OnTaskRestoreListener,

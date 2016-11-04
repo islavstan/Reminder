@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import model.Item;
+import com.islavdroid.reminder.model.Item;
 
 //с помощью него мы объеденим current task adapter и donetaskadapter
 public abstract class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

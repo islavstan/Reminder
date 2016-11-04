@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION =1;
@@ -20,6 +20,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String STATUS_COLUMN ="status";
     //БУДЕТ СОЗДАВАТЬСЯ ПРИ СОЗДАНИИ ЦЕЛИ И БЕРЕТ ЗА ОСНОВУ ТЕКУЩУЮ ДАТУ
     public static final String TIME_STAMP_COLUMN ="time_stamp";
+    public static final String SELECTION_TIME_STAMP = TIME_STAMP_COLUMN +" = ?";
+
 
     public static final String TABLE_CREATE_SCRIPT ="CREATE TABLE "+TABLE + " ("+ BaseColumns._ID+
             " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TITLE_COLUMN+ " TEXT NOT NULL, "+DATE_COLUMN+" LONG, "+
@@ -70,5 +72,11 @@ public static final String SELECTION_STATUS = DBHelper.STATUS_COLUMN+ " = ?";
     }
     public DBUpdateManager update(){
         return updateManager;
+    }
+
+    public void removeTask(long timeStamp){
+        getWritableDatabase().delete(TABLE,SELECTION_TIME_STAMP,new String[]{Long.toString(timeStamp)});
+
+
     }
 }

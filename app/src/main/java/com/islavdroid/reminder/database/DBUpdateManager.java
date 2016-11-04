@@ -4,7 +4,7 @@ package com.islavdroid.reminder.database;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 //урок 6 19 минут
 //отвечает за обновление данных в нашей базе
 public class DBUpdateManager {

@@ -2,16 +2,21 @@ package com.islavdroid.reminder.fragments;
 
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.islavdroid.reminder.MainActivity;
-import com.islavdroid.reminder.adapters.CurrentTasksAdapter;
+import com.islavdroid.reminder.R;
 import com.islavdroid.reminder.adapters.TaskAdapter;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.Item;
+import com.islavdroid.reminder.model.ModelTask;
 
 public abstract class TaskFragment extends Fragment {
     //класс объединяющий DoneTaskFragment и CurrentTaskFragment
@@ -56,6 +61,63 @@ public abstract class TaskFragment extends Fragment {
             activity.dbHelper.saveTask(newTask);
         }
     }
+
+    //пишем реализацию вызова диалога для удаления таска;   location у нас - viewHolder.getLayoutPosition()
+    public void removeTaskDialog(final int location){
+        AlertDialog.Builder alertDialog =new AlertDialog.Builder(getActivity());
+        alertDialog.setMessage(R.string.delete_dialog);
+        Item item =adapter.getItem(location);
+        if(item.isTask()){
+            ModelTask removingTask = (ModelTask)item;
+            final long timeStamp = removingTask.getTimeStamp();
+            final boolean[] isRemoved = {false};
+            alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    adapter.deleteItem(location);
+                    isRemoved[0] =true;
+                    //ставим отмену удаления на снекбар
+                    Snackbar snackbar =Snackbar.make(getActivity().findViewById(R.id.activity_main),R.string.removed,Snackbar.LENGTH_LONG);
+                    snackbar.setAction(R.string.cancel, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                          addTask(activity.dbHelper.query().getTask(timeStamp),false);
+                            isRemoved[0]=false;
+                        }
+                    });
+                    snackbar.getView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+                        @Override
+                        public void onViewAttachedToWindow(View v) {
+                            //когда появляется на экране
+                        }
+
+                        @Override
+                        public void onViewDetachedFromWindow(View v) {
+                            //когда исчезает
+                            if(isRemoved[0]){
+                                //полностью удаляем из базы
+                                activity.dbHelper.removeTask(timeStamp);
+                            }
+                        }
+                    });
+                    snackbar.show();
+                   dialog.dismiss();
+                }
+            });
+            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.cancel();
+
+
+                }
+            });
+        }
+        alertDialog.show();
+
+    }
+
 
     public abstract void moveTask(ModelTask task);
 

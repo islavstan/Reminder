@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,10 @@ import android.widget.TextView;
 import com.islavdroid.reminder.R;
 import com.islavdroid.reminder.Utils;
 import com.islavdroid.reminder.fragments.CurrentTaskFragment;
-import com.islavdroid.reminder.fragments.TaskFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import model.Item;
-import model.ModelTask;
+import com.islavdroid.reminder.model.Item;
+import com.islavdroid.reminder.model.ModelTask;
 
 
 public class CurrentTasksAdapter extends TaskAdapter {
@@ -76,6 +73,23 @@ public class CurrentTasksAdapter extends TaskAdapter {
             viewHolder.date.setTextColor(resources.getColor(R.color.secondary_text_default_material_light));
             viewHolder.priorityImage.setColorFilter(resources.getColor(task.getPriorityColor()));
             viewHolder.priorityImage.setImageResource(R.drawable.ic_checkbox_blank_circle);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Handler handler =new Handler();
+                    //реализовываем задержку чтобы сработала riple анимация до того как вызовится диалог
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                          getTaskFragment().removeTaskDialog(viewHolder.getLayoutPosition());
+                        }
+                    },1000);
+                    return true;
+                }
+            });
+
+
             //подключаем слушателя который по клику на картинке меняет статус задачи
             viewHolder.priorityImage.setOnClickListener(new View.OnClickListener() {
                 @Override

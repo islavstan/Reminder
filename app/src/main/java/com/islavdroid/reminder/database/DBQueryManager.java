@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.ModelTask;
+import com.islavdroid.reminder.model.ModelTask;
 
 public class DBQueryManager {
     private SQLiteDatabase sqLiteDatabase;
@@ -15,6 +15,21 @@ public class DBQueryManager {
     DBQueryManager(SQLiteDatabase sqLiteDatabase){
         this.sqLiteDatabase=sqLiteDatabase;
     }
+
+    public ModelTask getTask(long timeStamp){
+        ModelTask modelTask =null;
+        Cursor c = sqLiteDatabase.query(DBHelper.TABLE,null,DBHelper.SELECTION_TIME_STAMP,
+                new String[]{Long.toString(timeStamp)},null,null,null);
+        if (c.moveToFirst()){
+
+                String title = c.getString(c.getColumnIndex(DBHelper.TITLE_COLUMN));
+                long date =c.getLong(c.getColumnIndex(DBHelper.DATE_COLUMN));
+                int priority = c.getInt(c.getColumnIndex(DBHelper.PRIORITY_COLUMN));
+                int status =c.getInt(c.getColumnIndex(DBHelper.STATUS_COLUMN));
+               modelTask =new ModelTask(title,date,priority,status,timeStamp);
+    } c.close();
+        return modelTask;}
+
 
    /* columns – список полей, которые мы хотим получить
     selection – строка условия WHERE

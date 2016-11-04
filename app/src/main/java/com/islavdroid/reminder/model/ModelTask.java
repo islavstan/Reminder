@@ -1,4 +1,4 @@
-package model;
+package com.islavdroid.reminder.model;
 
 
 import com.islavdroid.reminder.R;
