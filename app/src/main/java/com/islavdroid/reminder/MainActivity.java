@@ -12,6 +12,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +39,7 @@ import com.islavdroid.reminder.model.ModelTask;
 
 public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener,DoneTaskFragment.OnTaskRestoreListener,
         CurrentTaskFragment.OnTaskDoneListener{
-
+private SearchView searchView;
 private TabAdapter tabAdapter;
     private TaskFragment currentTaskFragment;
     private TaskFragment doneTaskFragment;
@@ -49,6 +50,8 @@ private TabAdapter tabAdapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         //-----------сохранение настроек меню--------------
         PreferenceHelper.getInstance().init(getApplicationContext());
@@ -100,6 +103,21 @@ private TabAdapter tabAdapter;
         if(toolbar!=null){
             setSupportActionBar(toolbar);
         }
+        searchView =(SearchView)findViewById(R.id.search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                currentTaskFragment.findTasks(newText);
+                doneTaskFragment.findTasks(newText);
+                return false;
+            }
+        });
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.current_task));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.done_task));

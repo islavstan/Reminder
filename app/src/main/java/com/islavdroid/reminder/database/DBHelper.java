@@ -27,6 +27,11 @@ public class DBHelper extends SQLiteOpenHelper {
             " INTEGER PRIMARY KEY AUTOINCREMENT, "+ TITLE_COLUMN+ " TEXT NOT NULL, "+DATE_COLUMN+" LONG, "+
             PRIORITY_COLUMN+" INTEGER, "+ STATUS_COLUMN+" INTEGER, "+TIME_STAMP_COLUMN+" LONG);";
 public static final String SELECTION_STATUS = DBHelper.STATUS_COLUMN+ " = ?";
+    //ищем по заголовку в бд
+    public static final String SELECTION_LIKE_TITLE = TITLE_COLUMN + " LIKE ?";
+
+
+
     private DBQueryManager dbQueryManager;
     private DBUpdateManager updateManager;
 

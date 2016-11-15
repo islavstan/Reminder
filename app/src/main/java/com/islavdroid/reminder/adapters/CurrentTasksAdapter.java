@@ -68,6 +68,10 @@ public class CurrentTasksAdapter extends TaskAdapter {
                 viewHolder.date.setText(null);
             }
             itemView.setVisibility(View.VISIBLE);
+            viewHolder.priorityImage.setEnabled(true);
+
+
+
             itemView.setBackgroundColor(resources.getColor(R.color.gray_50));
             viewHolder.title.setTextColor(resources.getColor(R.color.primary_text_default_material_light));
             viewHolder.date.setTextColor(resources.getColor(R.color.secondary_text_default_material_light));
@@ -94,6 +98,9 @@ public class CurrentTasksAdapter extends TaskAdapter {
             viewHolder.priorityImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //эта строчка не даст нажать на иконку несколько раз
+                    viewHolder.priorityImage.setEnabled(false);
+                    //--------------------------------------------
                     task.setStatus(ModelTask.STATUS_DONE);
                     getTaskFragment().activity.dbHelper.update().status(task.getTimeStamp(),ModelTask.STATUS_DONE);
 
