@@ -15,6 +15,7 @@ import com.islavdroid.reminder.MainActivity;
 import com.islavdroid.reminder.R;
 import com.islavdroid.reminder.adapters.TaskAdapter;
 
+import com.islavdroid.reminder.alarm.AlarmHelper;
 import com.islavdroid.reminder.model.Item;
 import com.islavdroid.reminder.model.ModelTask;
 
@@ -24,6 +25,7 @@ public abstract class TaskFragment extends Fragment {
     protected RecyclerView.LayoutManager layoutManager;
     protected TaskAdapter adapter;
     public MainActivity activity;
+    public AlarmHelper alarmHelper;
 
 
     @Override
@@ -33,6 +35,7 @@ public abstract class TaskFragment extends Fragment {
         if(getActivity()!=null){
             activity=(MainActivity)getActivity();
         }
+        alarmHelper =AlarmHelper.getInstance();
 
         //вызываем здесь, чтобы не вызывать отдельно в каждом фрагменте
         addTaskFromDB();
@@ -95,6 +98,7 @@ public abstract class TaskFragment extends Fragment {
                         public void onViewDetachedFromWindow(View v) {
                             //когда исчезает
                             if(isRemoved[0]){
+                                alarmHelper.removeAlarm(timeStamp);
                                 //полностью удаляем из базы
                                 activity.dbHelper.removeTask(timeStamp);
                             }

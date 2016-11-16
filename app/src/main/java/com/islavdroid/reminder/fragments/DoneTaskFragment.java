@@ -82,6 +82,10 @@ OnTaskRestoreListener onTaskRestoreListener;
     @Override
     public void moveTask(ModelTask task) {
   onTaskRestoreListener.onTaskRestore(task);
+        if(task.getDate()!=0){
+            alarmHelper.setAlarm(task);
+        }
+
     }
 
     @Override

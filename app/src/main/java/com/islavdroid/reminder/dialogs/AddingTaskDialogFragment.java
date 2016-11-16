@@ -28,6 +28,7 @@ import com.islavdroid.reminder.Utils;
 
 import java.util.Calendar;
 
+import com.islavdroid.reminder.alarm.AlarmHelper;
 import com.islavdroid.reminder.model.ModelTask;
 
 public class AddingTaskDialogFragment extends DialogFragment{
@@ -185,12 +186,21 @@ public class AddingTaskDialogFragment extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 modelTask.setTitle(etTitle.getText().toString());
+                modelTask.setStatus(modelTask.STATUS_CURRENT);
                 if(etDate.length()!=0||etTime.length()!=0){
                     modelTask.setDate(calendar.getTimeInMillis());
+                   //здесь создаём объект AlarmHelper
+                    AlarmHelper alarmHelper =AlarmHelper.getInstance();
+                    alarmHelper.setAlarm(modelTask);
+
+
+
                 }
                 modelTask.setStatus(ModelTask.STATUS_CURRENT);
                 addingTaskListener.onTaskAdded(modelTask);
              dialog.dismiss();
+
+
 
             }
         });

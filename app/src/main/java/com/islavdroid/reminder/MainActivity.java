@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 
 import com.islavdroid.reminder.adapters.TabAdapter;
+import com.islavdroid.reminder.alarm.AlarmHelper;
 import com.islavdroid.reminder.database.DBHelper;
 import com.islavdroid.reminder.dialogs.AddingTaskDialogFragment;
 import com.islavdroid.reminder.fragments.CurrentTaskFragment;
@@ -65,9 +66,26 @@ private TabAdapter tabAdapter;
         fragmentManager = getFragmentManager();
         runSplash();
 
-
+        AlarmHelper.getInstance().init(getApplicationContext());
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.activityPaused();
+    }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
